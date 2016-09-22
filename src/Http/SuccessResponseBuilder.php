@@ -9,6 +9,7 @@ use Flugg\Responder\ResourceFactory;
 use Flugg\Responder\ResourceResolver;
 use Flugg\Responder\Transformation;
 use Flugg\Responder\Transformer;
+use Flugg\Responder\Transformers\ArrayTransformer;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -133,10 +134,15 @@ class SuccessResponseBuilder extends ResponseBuilder
     {
         $resource = $this->resourceFactory->make($data);
 
-        if (! is_null($resource->getData())) {
+        // If $data is Eloquent Model
+        if (! is_null($resource->getData()) && $this->isEloquentModel($resource->getData())) {
             $model = $this->resolveModel($resource->getData());
             $transformer = $this->resolveTransformer($model, $transformer);
             $resourceKey = $this->resolveResourceKey($model, $resourceKey);
+        }
+        // if $data is array
+        else {
+            $transformer = new ArrayTransformer();
         }
 
         $this->resource = $resource->setTransformer($transformer)->setResourceKey($resourceKey);
@@ -213,6 +219,11 @@ class SuccessResponseBuilder extends ResponseBuilder
         }
 
         return $model;
+    }
+
+    protected function isEloquentModel($data)
+    {
+        return ($data instanceof Model || array_values($data)[0] instanceof Model);
     }
 
     /**
