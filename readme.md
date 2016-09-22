@@ -1,4 +1,6 @@
 # Laravel Responder
+## With Doctrine and PHP arrays support
+
 
 [![Latest Stable Version](https://poser.pugx.org/flugger/laravel-responder/v/stable?format=flat-square)](https://github.com/flugger/laravel-responder)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/flugger/laravel-responder.svg?style=flat-square)](https://packagist.org/packages/flugger/laravel-responder)
@@ -29,7 +31,7 @@ Laravel Responder is a package for your JSON APIs, integrating [Fractal](https:/
 
 ## Philosophy
 
-When building powerful APIs, you want to make sure your endpoints are consistent and easy to consume by your application. Laravel is a great fit your API, however, it lacks support for common tools like transformers and serializers. Fractal, on the other hand, has some great tools for building APIs and fills in the gaps of Laravel. 
+When building powerful APIs, you want to make sure your endpoints are consistent and easy to consume by your application. Laravel is a great fit your API, however, it lacks support for common tools like transformers and serializers. Fractal, on the other hand, has some great tools for building APIs and fills in the gaps of Laravel.
 
 While Fractal solves many of the shortcomings of Laravel, it's often a bit cumbersome to integrate into the framework. Take this example from a controller:
 
@@ -96,7 +98,7 @@ You may also publish the package configuration and language file using the Artis
 php artisan vendor:publish
 ```
 
-This will publish a `responder.php` configuration file in your `config` folder. 
+This will publish a `responder.php` configuration file in your `config` folder.
 
 It will also publish an `errors.php` file inside your `lang/en` folder which is used to store your error messages.
 
@@ -179,7 +181,7 @@ Both the helper method and the facade are just different ways of accessing the r
 
 Lastly, the package also has a `Flugg\Responder\Traits\RespondsWithJson` trait you can use in your base controller.
 
-The trait gives you access to `successResponse()` and `errorResponse()` methods in your controllers: 
+The trait gives you access to `successResponse()` and `errorResponse()` methods in your controllers:
 
 ```php
 return $this->successResponse(User::all());
@@ -411,7 +413,7 @@ php artisan make:transformer UserTransformer --pivot
 
 #### Mapping Transformers to Models
 
-In a lot of cases you want to use the same transformer everytime you refer to a model. Instead of passing in a transformer for every response, you can map a transformer to a model, so the model is automatically transformed. 
+In a lot of cases you want to use the same transformer everytime you refer to a model. Instead of passing in a transformer for every response, you can map a transformer to a model, so the model is automatically transformed.
 
 To map a transformer to a model, your model needs to implement `Flugg\Responder\Contract\Transformable`. The interface requires a static `transformer()` method, which should return a transformer:
 
@@ -683,7 +685,7 @@ Which will output the same JSON as above, with the error message set:
 
 ### Exceptions
 
-When something unexpected happens, you might prefer to throw actual exceptions instead of using the `error()` method. And even if you don't, you might want the package to catch Laravel's default exceptions, to automatically convert them to JSON error responses. 
+When something unexpected happens, you might prefer to throw actual exceptions instead of using the `error()` method. And even if you don't, you might want the package to catch Laravel's default exceptions, to automatically convert them to JSON error responses.
 
 #### Handle Exceptions
 
