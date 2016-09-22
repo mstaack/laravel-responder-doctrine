@@ -1,5 +1,5 @@
 {
-    "name": "tttptd/laravel-responder",
+    "name": "tttptd/laravel-responder-doctrine",
     "description": "A Laravel package for APIs, wrapping the Fractal library behind an elegant Laravel API.",
     "keywords": [
         "laravel",
