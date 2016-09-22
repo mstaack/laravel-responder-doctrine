@@ -1,13 +1,6 @@
 # Laravel Responder
 ## With Doctrine and PHP arrays support
 
-
-[![Latest Stable Version](https://poser.pugx.org/flugger/laravel-responder/v/stable?format=flat-square)](https://github.com/flugger/laravel-responder)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/flugger/laravel-responder.svg?style=flat-square)](https://packagist.org/packages/flugger/laravel-responder)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](license.md)
-[![Build Status](https://img.shields.io/travis/flugger/laravel-responder/master.svg?style=flat-square)](https://travis-ci.org/flugger/laravel-responder)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/flugger/laravel-responder.svg?style=flat-square)](https://scrutinizer-ci.com/g/flugger/laravel-responder/?branch=master)
-
 ![Laravel Responder](http://goo.gl/HvmX4j)
 
 Laravel Responder is a package for your JSON APIs, integrating [Fractal](https://github.com/thephpleague/fractal) into Laravel and Lumen. It can [transform](http://fractal.thephpleague.com/transformers) your Eloquent models and [serialize](http://fractal.thephpleague.com/serializers) your success responses, but it can also help you build error responses, handle exceptions and integration test your API.
@@ -69,7 +62,7 @@ This package requires:
 Install the package through Composer:
 
 ```shell
-composer require flugger/laravel-responder
+composer require tttptd/laravel-responder-doctrine
 ```
 
 ### Laravel
