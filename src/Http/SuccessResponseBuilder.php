@@ -10,6 +10,7 @@ use Flugg\Responder\ResourceResolver;
 use Flugg\Responder\Transformation;
 use Flugg\Responder\Transformer;
 use Flugg\Responder\Transformers\ArrayTransformer;
+use Flugg\Responder\Transformers\EntityTransformer;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -62,6 +63,12 @@ class SuccessResponseBuilder extends ResponseBuilder
      * @var int
      */
     protected $statusCode = 200;
+
+    /**
+     * JMS Doctrine Serialize groups
+     * @var mixed
+     */
+    protected $serializeGroups;
 
     /**
      * SuccessResponseBuilder constructor.
@@ -140,7 +147,12 @@ class SuccessResponseBuilder extends ResponseBuilder
             $transformer = $this->resolveTransformer($model, $transformer);
             $resourceKey = $this->resolveResourceKey($model, $resourceKey);
         }
-        // if $data is array
+        // If $data is array with Doctrine Entities
+        elseif(!is_null($resource->getData()) && $this->isEntity($resource->getData())) {
+            $transformer = app(EntityTransformer::class);
+            if(!is_null($this->serializeGroups)) $transformer->setGroups($this->serializeGroups);
+        }
+        // If $data is array
         else {
             $transformer = new ArrayTransformer();
         }
@@ -224,6 +236,11 @@ class SuccessResponseBuilder extends ResponseBuilder
     protected function isEloquentModel($data)
     {
         return ($data instanceof Model || array_values($data)[0] instanceof Model);
+    }
+
+    protected function isEntity($data)
+    {
+        return (is_array($data) && is_object(array_values($data)[0]));
     }
 
     /**
@@ -347,4 +364,16 @@ class SuccessResponseBuilder extends ResponseBuilder
     {
         return $this->manager->createData($resource)->toArray();
     }
+
+    /**
+     * Set JMS Doctrine serialize groups
+     * @param string|array $groups
+     * @return self
+     */
+    public function setGroups($groups = null)
+    {
+        $this->serializeGroups = $groups;
+        return $this;
+    }
+
 }

@@ -26,6 +26,9 @@ return [
     |
     */
 
-    'include_status_code' => true
+    'include_status_code' => true,
+
+    // For JMS\Serializer Annotations Autoload
+    'path_to_jms_serializer' => '/vendor/jms/serializer/src',
 
 ];

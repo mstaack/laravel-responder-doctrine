@@ -32,6 +32,12 @@ class Responder
     protected $errorResponse;
 
     /**
+     * JMS Doctrine Serialize groups
+     * @var mixed
+     */
+    protected $serializeGroups;
+
+    /**
      * Constructor.
      *
      * @param \Flugg\Responder\Http\ErrorResponseBuilder   $errorResponse
@@ -74,7 +80,11 @@ class Responder
             list($statusCode, $meta) = [200, $statusCode];
         }
 
-        return $this->successResponse->transform($data)->addMeta($meta)->respond($statusCode);
+        return $this->successResponse
+            ->setGroups($this->serializeGroups)
+            ->transform($data)
+            ->addMeta($meta)
+            ->respond($statusCode);
     }
 
     /**
@@ -88,4 +98,16 @@ class Responder
     {
         return $this->successResponse->transform($data, $transformer);
     }
+
+    /**
+     * Set JMS Doctrine serialize groups
+     * @param string|array $groups
+     * @return self
+     */
+    public function setGroups($groups)
+    {
+        $this->serializeGroups = $groups;
+        return $this;
+    }
+
 }

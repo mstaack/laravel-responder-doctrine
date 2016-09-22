@@ -37,7 +37,8 @@ class ResourceFactory
         Pivot::class => 'makeFromPivot',
         Model::class => 'makeFromModel',
         Paginator::class => 'makeFromPaginator',
-        Relation::class => 'makeFromRelation'
+        Relation::class => 'makeFromRelation',
+        'object' => 'makeFromEntity',
     ];
 
     /**
@@ -52,6 +53,8 @@ class ResourceFactory
             return new NullResource();
         } elseif (is_array($data)) {
             return static::makeFromArray($data);
+        } elseif (is_object($data)) {
+            return static::makeFromEntity($data);
         }
 
         $method = static::getMakeMethod($data);
@@ -159,4 +162,16 @@ class ResourceFactory
     {
         return static::makeFromCollection($relation->get());
     }
+
+    /**
+     * Make resource from an Entity
+     *
+     * @param  Doctrine Entity $entity
+     * @return \League\Fractal\Resource\ResourceInterface
+     */
+    protected function makeFromEntity($entity):ResourceInterface
+    {
+        return new ItemResource($entity);
+    }
+
 }

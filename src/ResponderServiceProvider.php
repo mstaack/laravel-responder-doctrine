@@ -13,6 +13,10 @@ use Laravel\Lumen\Application as Lumen;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\SerializerAbstract;
 
+use Doctrine\Common\Annotations\AnnotationRegistry as DoctrineAnnotationRegistry;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+
 /**
  * The Laravel Responder service provider. This is where the package is bootstrapped.
  *
@@ -74,6 +78,8 @@ class ResponderServiceProvider extends BaseServiceProvider
         });
 
         $this->registerAliases();
+
+        $this->registerDoctrineSerializer();
     }
 
     /**
@@ -168,4 +174,23 @@ class ResponderServiceProvider extends BaseServiceProvider
     {
         $this->app->configure('responder');
     }
+
+    protected function registerDoctrineSerializer()
+    {
+        $this->app->singleton(SerializerDoctrine::class, function($app) {
+
+            // Autoload for JMS Annotations
+            DoctrineAnnotationRegistry::registerAutoloadNamespace(
+                'JMS\Serializer\Annotation',
+                base_path(config('responder.path_to_jms_serializer'))
+            );
+
+            return SerializerBuilder::create()
+                ->setCacheDir(storage_path('app/cache/serializer'))
+                ->setDebug(config('app.debug'))
+                ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy()) // as is
+                ->build();
+        });
+    }
+
 }
