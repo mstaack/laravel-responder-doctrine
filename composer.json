@@ -1,5 +1,5 @@
 {
-    "name": "flugger/laravel-responder",
+    "name": "tttptd/laravel-responder",
     "description": "A Laravel package for APIs, wrapping the Fractal library behind an elegant Laravel API.",
     "keywords": [
         "laravel",
@@ -13,7 +13,7 @@
         "doctrine",
         "serializer"
     ],
-    "homepage": "https://github.com/flugger/laravel-responder",
+    "homepage": "https://github.com/tttptd/laravel-responder",
     "license": "MIT",
     "authors": [
         {
