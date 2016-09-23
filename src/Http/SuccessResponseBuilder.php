@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use League\Fractal\Manager;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Serializer\SerializerAbstract;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
 /**
  * This class is a response builder for building successful JSON API responses and is
@@ -235,7 +236,7 @@ class SuccessResponseBuilder extends ResponseBuilder
 
     protected function isEloquentModel($data)
     {
-        return ($data instanceof Model || array_values($data)[0] instanceof Model);
+        return ($data instanceof Model || (is_array($data) && array_values($data)[0] instanceof Model));
     }
 
     protected function isEntity($data)

@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Flugg\Responder\Pagination\DoctrinePaginatorAdapter;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as CollectionResource;
 use League\Fractal\Resource\Item as ItemResource;
 use League\Fractal\Resource\NullResource;
 use League\Fractal\Resource\ResourceInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
 /**
  * This class builds an instance of [\League\Fractal\Resource\ResourceInterface]. It
@@ -37,6 +39,7 @@ class ResourceFactory
         Pivot::class => 'makeFromPivot',
         Model::class => 'makeFromModel',
         Paginator::class => 'makeFromPaginator',
+        DoctrinePaginator::class => 'makeFromDoctrinePaginator',
         Relation::class => 'makeFromRelation',
         'object' => 'makeFromEntity',
     ];
@@ -51,11 +54,13 @@ class ResourceFactory
     {
         if (is_null($data)) {
             return new NullResource();
-        } elseif (is_array($data)) {
-            return static::makeFromArray($data);
-        } elseif (is_object($data)) {
-            return static::makeFromEntity($data);
         }
+        elseif (is_array($data)) {
+            return static::makeFromArray($data);
+        }
+        /*elseif (is_object($data)) {
+            return static::makeFromEntity($data);
+        }*/
 
         $method = static::getMakeMethod($data);
 
@@ -136,6 +141,16 @@ class ResourceFactory
 
         if ($resource instanceof CollectionResource) {
             $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+        }
+
+        return $resource;
+    }
+
+    protected function makeFromDoctrinePaginator(DoctrinePaginator $paginator):ResourceInterface
+    {
+        $resource = static::makeFromArray((array)$paginator->getIterator());
+        if($resource instanceof CollectionResource) {
+            $resource->setPaginator(new DoctrinePaginatorAdapter($paginator));
         }
 
         return $resource;
