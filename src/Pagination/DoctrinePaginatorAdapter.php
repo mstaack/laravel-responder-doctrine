@@ -24,7 +24,7 @@ class DoctrinePaginatorAdapter implements PaginatorInterface
     {
         $offset = $this->paginator->getQuery()->getFirstResult();
         $limit = $this->paginator->getQuery()->getMaxResults();
-        return ceil($offset / $limit);
+        return ceil($offset / $limit) + 1;
     }
 
     /**
@@ -34,7 +34,7 @@ class DoctrinePaginatorAdapter implements PaginatorInterface
      */
     public function getLastPage()
     {
-        $total = $this->getCount();
+        $total = $this->getTotal();
         $limit = $this->paginator->getQuery()->getMaxResults();
         return ceil($total / $limit);
     }
