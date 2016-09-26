@@ -82,6 +82,9 @@ class ApiSerializer extends ArraySerializer
             'perPage' => $pagination['per_page'],
             'currentPage' => $pagination['current_page'],
             'totalPages' => $pagination['total_pages'],
+
+            'minPage' => 1,
+            'maxPage' => $pagination['total_pages'],
         ];
 
         return ['pagination' => $data];
