@@ -58,9 +58,12 @@ class ResourceFactory
         elseif (is_array($data)) {
             return static::makeFromArray($data);
         }
-        /*elseif (is_object($data)) {
+        elseif ($data instanceof DoctrinePaginator) {
+            return static::makeFromDoctrinePaginator($data);
+        }
+        elseif (is_object($data)) {
             return static::makeFromEntity($data);
-        }*/
+        }
 
         $method = static::getMakeMethod($data);
 
