@@ -177,13 +177,13 @@ class ResponderServiceProvider extends BaseServiceProvider
 
     protected function registerDoctrineSerializer()
     {
-        $this->app->singleton(SerializerDoctrine::class, function($app) {
+        // Autoload for JMS Annotations
+        DoctrineAnnotationRegistry::registerAutoloadNamespace(
+            'JMS\Serializer\Annotation',
+            base_path(config('responder.path_to_jms_serializer'))
+        );
 
-            // Autoload for JMS Annotations
-            DoctrineAnnotationRegistry::registerAutoloadNamespace(
-                'JMS\Serializer\Annotation',
-                base_path(config('responder.path_to_jms_serializer'))
-            );
+        $this->app->singleton(SerializerDoctrine::class, function($app) {
 
             return SerializerBuilder::create()
                 ->setCacheDir(storage_path('app/cache/serializer'))
